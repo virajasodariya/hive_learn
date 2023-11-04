@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           seedColor: Colors.tealAccent,
         ),
       ),
-      home: const AdvanceScreen(),
+      home: const TodoScreen(),
     );
   }
 }

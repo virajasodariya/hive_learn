@@ -5,14 +5,14 @@ import 'package:hive_learn/Model/todo_model.dart';
 import 'package:hive_learn/View/Advance/enum.dart';
 import 'package:hive_learn/main.dart';
 
-class AdvanceScreen extends StatefulWidget {
-  const AdvanceScreen({super.key});
+class TodoScreen extends StatefulWidget {
+  const TodoScreen({super.key});
 
   @override
-  State<AdvanceScreen> createState() => _AdvanceScreenState();
+  State<TodoScreen> createState() => _TodoScreenState();
 }
 
-class _AdvanceScreenState extends State<AdvanceScreen> {
+class _TodoScreenState extends State<TodoScreen> {
   late Box<TodoModel> todoBox;
 
   TextEditingController titleController = TextEditingController();
