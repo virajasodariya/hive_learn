@@ -1,0 +1,1 @@
+enum TodoFilter { ALL, COMPLETED, INCOMPLETE }
