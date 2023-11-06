@@ -37,82 +37,6 @@ class _TodoScreenState extends State<TodoScreen> {
     );
   }
 
-  /// body
-  ValueListenableBuilder<Box<TodoModel>> buildBody() {
-    return ValueListenableBuilder(
-      valueListenable: todoBox.listenable(),
-      builder: (context, value, child) {
-        List<int> keys;
-
-        if (filter == TodoFilter.ALL) {
-          keys = todoBox.keys.cast<int>().toList();
-        } else if (filter == TodoFilter.COMPLETED) {
-          keys = todoBox.keys
-              .cast<int>()
-              .where((element) => value.get(element)!.isCompleted)
-              .toList();
-        } else {
-          keys = todoBox.keys
-              .cast<int>()
-              .where((element) => !value.get(element)!.isCompleted)
-              .toList();
-        }
-
-        return ListView.builder(
-          itemCount: keys.length,
-          itemBuilder: (context, index) {
-            final key = keys[index];
-            final TodoModel? todo = value.get(key);
-
-            return ListTile(
-              onTap: () {
-                updateDialog(context, todo, key);
-              },
-              leading: Text('$key'),
-              title: Text(todo!.title),
-              subtitle: Text(todo.detail),
-              trailing: Icon(
-                Icons.check,
-                color: todo.isCompleted ? Colors.green : Colors.red,
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  /// update dialog box
-  Future<dynamic> updateDialog(BuildContext context, TodoModel todo, int key) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          child: Padding(
-            padding: const EdgeInsets.all(22),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    TodoModel updateModel = TodoModel(
-                        title: todo.title, detail: todo.detail, isCompleted: true);
-
-                    todoBox.put(key, updateModel);
-
-                    Get.back();
-                  },
-                  child: const Text('MARK as READ'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  /// app bar
   AppBar appBar() {
     return AppBar(
       title: const Text("TODO Hive"),
@@ -149,7 +73,6 @@ class _TodoScreenState extends State<TodoScreen> {
     );
   }
 
-  /// add new entry
   FloatingActionButton floatingActionButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
@@ -202,6 +125,79 @@ class _TodoScreenState extends State<TodoScreen> {
         );
       },
       child: const Icon(Icons.add),
+    );
+  }
+
+  ValueListenableBuilder<Box<TodoModel>> buildBody() {
+    return ValueListenableBuilder(
+      valueListenable: todoBox.listenable(),
+      builder: (context, value, child) {
+        List<int> keys;
+
+        if (filter == TodoFilter.ALL) {
+          keys = todoBox.keys.cast<int>().toList();
+        } else if (filter == TodoFilter.COMPLETED) {
+          keys = todoBox.keys
+              .cast<int>()
+              .where((element) => value.get(element)!.isCompleted)
+              .toList();
+        } else {
+          keys = todoBox.keys
+              .cast<int>()
+              .where((element) => !value.get(element)!.isCompleted)
+              .toList();
+        }
+
+        return ListView.builder(
+          itemCount: keys.length,
+          itemBuilder: (context, index) {
+            final key = keys[index];
+            final TodoModel? todo = value.get(key);
+
+            return ListTile(
+              onTap: () {
+                updateDialog(context, todo, key);
+              },
+              leading: Text('$key'),
+              title: Text(todo!.title),
+              subtitle: Text(todo.detail),
+              trailing: Icon(
+                Icons.check,
+                color: todo.isCompleted ? Colors.green : Colors.red,
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<dynamic> updateDialog(BuildContext context, TodoModel todo, int key) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(22),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    TodoModel updateModel = TodoModel(
+                        title: todo.title, detail: todo.detail, isCompleted: true);
+
+                    todoBox.put(key, updateModel);
+
+                    Get.back();
+                  },
+                  child: const Text('MARK as READ'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
